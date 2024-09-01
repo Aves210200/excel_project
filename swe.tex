@@ -1,0 +1,121 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\title{Numerical Solution of 1D Shallow Water Equations Using FTCS Scheme}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report delves into the numerical solution of the 1D Shallow Water Equations (SWE) using the Forward in Time, Central in Space (FTCS) scheme, implemented in Excel using VBA (Visual Basic for Applications). The study explores the governing principles behind the SWE, the discretization of equations, stability and convergence criteria, computational results, and potential improvements for future research. The SWE are critical in modeling phenomena in coastal engineering, oceanography, and hydraulic engineering, making them essential for understanding natural water flows and designing water management systems.
+\end{abstract}
+
+\section{Introduction}
+
+The \textit{Shallow Water Equations (SWE)} are a set of hyperbolic partial differential equations that model the flow below a pressure surface in a fluid. They are particularly useful for approximating the behavior of water in rivers, lakes, and oceans where the horizontal length scale is much larger than the vertical scale. These equations are an essential tool in fluid dynamics and have applications in coastal engineering, river management, and forecasting floods.
+
+The SWE consist of the continuity equation, which represents the conservation of mass, and the momentum equation, which represents the conservation of momentum:
+
+\begin{itemize}
+    \item \textbf{Continuity Equation:}
+    \begin{equation}
+        \frac{\partial \eta}{\partial t} + \frac{\partial (uD)}{\partial x} = 0
+    \end{equation}
+    where \( \eta \) is the surface elevation, \( u \) is the depth-averaged velocity, and \( D = h + \eta \) is the total water depth (with \( h \) being the mean water depth).
+
+    \item \textbf{Momentum Equation:}
+    \begin{equation}
+        \frac{\partial u}{\partial t} + u\frac{\partial u}{\partial x} + g\frac{\partial \eta}{\partial x} = 0
+    \end{equation}
+    where \( g \) is the gravitational acceleration constant.
+\end{itemize}
+
+These equations assume that vertical accelerations are negligible, allowing the use of the hydrostatic approximation, which simplifies the full Navier-Stokes equations to a 2D problem.
+
+\section{Derivation of the SWE}
+
+The derivation of the SWE starts from the depth-averaged Navier-Stokes equations under the assumptions of shallow water and negligible vertical accelerations:
+
+\begin{itemize}
+    \item \textbf{Mass Conservation (Continuity Equation):} Integrating the mass continuity equation vertically across the fluid depth results in the SWE continuity equation.
+    \item \textbf{Momentum Conservation (Momentum Equation):} Applying Newton's second law in the horizontal direction and integrating vertically yields the momentum equation. The pressure term is simplified using the hydrostatic approximation, and the frictional forces are typically considered negligible for basic formulations.
+\end{itemize}
+
+The SWE also consider the Coriolis effect for rotating systems like oceans, which introduces additional terms into the equations when modeling large-scale phenomena.
+
+\section{Numerical Scheme: FTCS Method}
+
+The \textit{Forward in Time, Central in Space (FTCS)} scheme is a simple and commonly used explicit finite difference method for numerically solving hyperbolic partial differential equations like the SWE. The scheme approximates time derivatives using a forward difference and spatial derivatives using central differences, resulting in the following discretized forms:
+
+\begin{equation}
+\eta^{n+1}_i = \eta^n_i - \frac{\Delta t}{2\Delta x} \left( u^n_{i+1}D^n_{i+1} - u^n_{i-1}D^n_{i-1} \right)
+\end{equation}
+
+\begin{equation}
+u^{n+1}_i = u^n_i - \frac{\Delta t}{2\Delta x} \left( u^n_i \frac{u^n_{i+1} - u^n_{i-1}}{2} + g (\eta^n_{i+1} - \eta^n_{i-1}) \right)
+\end{equation}
+
+\subsection{Stability Criterion}
+The FTCS scheme is conditionally stable, meaning that the time step \( \Delta t \) must be chosen carefully to satisfy the \textbf{Courant-Friedrichs-Lewy (CFL) condition}:
+
+\begin{equation}
+\Delta t \leq \frac{\Delta x}{|u| + \sqrt{gD}}
+\end{equation}
+
+Failure to meet this condition results in numerical instability, manifesting as oscillations or divergence in the computed solution.
+
+\subsection{Accuracy}
+The FTCS scheme is \textbf{first-order accurate in time} and \textbf{second-order accurate in space}. Despite its simplicity, it can lead to significant numerical diffusion (smoothing of sharp gradients) and instability, especially for large time steps or high flow velocities.
+
+\section{Methodology}
+
+The implementation of the FTCS scheme is carried out using \textbf{Excel} with \textbf{VBA (Visual Basic for Applications)}. The methodology involves setting up a computational grid and iteratively solving the discretized SWE at each grid point over successive time steps.
+
+\subsection{Grid and Parameter Setup}
+The spatial domain is divided into \( N \) equally spaced grid points, with \( \Delta x \) representing the grid spacing. The temporal domain is discretized with a time step \( \Delta t \).
+
+\subsection{Initial and Boundary Conditions}
+The initial water elevation \( \eta(x, 0) \) and velocity \( u(x, 0) \) profiles are defined based on physical scenarios, such as a sine wave or a step function. Boundary conditions are specified as Neumann (zero-gradient) for \( \eta \) and Dirichlet (fixed value) for \( u \).
+
+\subsection{VBA Implementation}
+The VBA code includes functions to compute the updated values of \( \eta \) and \( u \) using the FTCS discretization formulae. A loop is used to perform time-stepping for a specified duration. The FTCS formulas are translated directly into VBA code, ensuring the numerical calculations are performed efficiently.
+
+\section{Results and Discussion}
+
+The \textit{Excel sheet (swe.xlsm)} provides a dynamic visualization of the evolving surface elevation and velocity profiles over time. The results show how disturbances propagate and dissipate across the computational domain. Several observations are made from the results:
+
+\begin{itemize}
+    \item \textbf{Wave Propagation:} The numerical solution demonstrates wave propagation phenomena, which are consistent with analytical expectations. The amplitude of the waves diminishes over time due to numerical diffusion inherent in the FTCS scheme.
+    
+    \item \textbf{Stability and Convergence:} The stability analysis confirms that the time step size \( \Delta t \) significantly impacts the numerical stability of the solution. Simulations with larger \( \Delta t \) violate the CFL condition, resulting in unstable oscillations.
+    
+    \item \textbf{Improvements:}
+    \begin{itemize}
+        \item \textbf{Higher-Order Schemes:} Replacing the FTCS scheme with a higher-order method like Lax-Wendroff or MacCormack can improve accuracy and reduce numerical diffusion.
+        
+        \item \textbf{Implicit Methods:} The Crank-Nicolson or implicit upwind schemes provide unconditional stability and can handle larger time steps without instability.
+        
+        \item \textbf{Refined Grid and Adaptive Time Stepping:} Implementing an adaptive grid refinement technique and adaptive time-stepping could further enhance accuracy and stability.
+    \end{itemize}
+\end{itemize}
+
+\section{Conclusion}
+
+The study successfully demonstrates the implementation of the 1D Shallow Water Equations using the FTCS scheme in Excel with VBA. While the FTCS scheme provides a basic understanding of numerical methods for fluid dynamics problems, more advanced techniques are required for higher accuracy and stability in practical applications. Future work should focus on implementing more sophisticated numerical methods and optimizing computational performance.
+
+\section{References}
+
+\begin{itemize}
+    \item Fenton, J. D. (1990). "Numerical Methods for Nonlinear Waves." Computational Fluid Dynamics.
+    \item Hunter, J. R., and Harris, R. (1993). "Introduction to the Theory of Shallow Water Waves." Journal of Hydraulic Research.
+    \item LeVeque, R. J. (2002). "Finite Volume Methods for Hyperbolic Problems." Cambridge Texts in Applied Mathematics.
+\end{itemize}
+
+\end{document}
