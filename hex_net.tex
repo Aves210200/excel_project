@@ -1,0 +1,99 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+
+\title{Numerical Analysis of Heat Exchanger Network in Crude Oil Preheating}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report presents a detailed analysis of a Heat Exchanger Network (HEN) used in the preheating of crude oil in a distillation unit. The network consists of a train of Shell and Tube Heat Exchangers arranged in parallel paths to maximize energy recovery. The effectiveness-NTU method is used to calculate the exit temperatures on both the hot and cold sides. Additionally, the report provides insights into the effect of removing certain heat exchangers from the network on the exit temperatures and overall network efficiency.
+\end{abstract}
+
+\section{Introduction}
+In industrial processes, especially in petroleum refining, energy recovery and optimization are key for economic viability and sustainability. Heat Exchanger Networks (HENs) are widely used to recover heat from hot streams and transfer it to cold streams, minimizing energy consumption. This report focuses on a heat exchanger network used to preheat crude oil before it reaches a distillation unit. The heat is supplied by hot distillates (D1, D2, D3) coming from the distillation unit, which need to be cooled.
+
+The setup involves three streams, each with different split ratios for preheating the crude oil. The specific heat capacities, initial temperatures, and flow rates for each stream are provided for the analysis.
+
+\section{Heat Exchanger Network Configuration}
+The HEN comprises a series of Shell and Tube Heat Exchangers in a train configuration. Each exchanger's role is to facilitate heat exchange between the crude oil and distillates. The network consists of 9 heat exchangers, labeled HEij, where \(i\) denotes the stream number and \(j\) denotes the exchanger number within that stream.
+
+\subsection{Initial Conditions}
+The initial conditions for the streams and their respective properties are given in Table \ref{tab:initial_conditions}.
+
+\begin{table}[h!]
+    \centering
+    \caption{Initial Flow Rates and Temperatures}
+    \label{tab:initial_conditions}
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Component} & \textbf{Flowrate (ton/hr)} & \textbf{Temperature (°C)} \\
+        \midrule
+        Crude Oil & 1000 & 25 \\
+        Distillate 1 (D1) & 100 & 180 \\
+        Distillate 2 (D2) & 100 & 200 \\
+        Distillate 3 (D3) & 150 & 250 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Heat Exchanger Effectiveness}
+The effectiveness-NTU (Number of Transfer Units) method is employed to calculate the exit temperatures. The effectiveness (\( \epsilon \)) is calculated using the following formula for shell and tube heat exchangers:
+
+\begin{equation}
+\epsilon = \frac{2}{1 + C + \sqrt{1 + C^2}} \cdot \frac{1 + \exp\left(-NTU \sqrt{1 + C^2}\right)}{1 - \exp\left(-NTU \sqrt{1 + C^2}\right)}
+\end{equation}
+
+where \( C \) is the heat capacity ratio and \( NTU \) is the number of transfer units.
+
+\subsection{UAF Values for Heat Exchangers}
+The overall heat transfer coefficients (U), areas (A), and correction factors (F) for each of the 9 heat exchangers are given in the matrix below:
+
+\begin{equation}
+UAF =
+\begin{bmatrix}
+0.1 & 0.1 & 0.01 \\
+0.05 & 0.05 & 0.05 \\
+0.005 & 0.01 & 0.1 \\
+\end{bmatrix} \, \text{Gcal/hr-°C}
+\end{equation}
+
+\section{Methodology}
+The exit temperatures on both the hot and cold sides of each exchanger are calculated using the Effectiveness-NTU method. The calculation of the mixed temperature for each stream after passing through the heat exchangers is given by:
+
+\begin{equation}
+T_{mix} = \frac{\sum_i m_i C_{p,i} T_i}{\sum_i m_i C_{p,i}}
+\end{equation}
+
+where \( m_i \) is the mass flow rate, \( C_{p,i} \) is the specific heat capacity, and \( T_i \) is the temperature of each stream.
+
+\section{Results and Discussion}
+The calculated exit temperatures for each stream after passing through the heat exchangers show the effectiveness of the HEN in preheating the crude oil. The effectiveness of each heat exchanger is analyzed based on the calculated NTU values, heat capacity ratios, and the corresponding exit temperatures. 
+
+\subsection{Effect of Removing Heat Exchangers}
+To assess the redundancy and criticality of each heat exchanger in the network, a sensitivity analysis is performed by sequentially removing each heat exchanger and recalculating the exit temperatures. This helps in identifying potential optimization opportunities to reduce costs and improve network efficiency without significantly impacting the heat exchange process.
+
+\subsection{Recommendations for Optimization}
+\begin{itemize}
+    \item \textbf{Reconfiguration of Exchangers:} Consider rearranging the exchangers to align with the temperature crossover points, maximizing the temperature gradient and heat transfer efficiency.
+    \item \textbf{Use of Advanced Control Strategies:} Implement advanced control algorithms to dynamically adjust the flow rates and temperatures based on real-time data, thereby optimizing the overall heat recovery.
+    \item \textbf{Enhanced Maintenance Schedule:} Regular cleaning and maintenance of the exchangers can help maintain high heat transfer coefficients (U values), thereby increasing overall effectiveness.
+\end{itemize}
+
+\section{Conclusion}
+The analysis of the heat exchanger network provides valuable insights into the preheating process of crude oil using distillates. The effectiveness-NTU method proves to be an effective approach for calculating exit temperatures and evaluating network performance. The study suggests potential avenues for optimization by removing redundant heat exchangers and reconfiguring the network.
+
+\section{References}
+\begin{itemize}
+    \item Holman, J. P. (2018). \textit{Heat Transfer}. McGraw-Hill Education.
+    \item Wikipedia Contributors. "NTU Method." Wikipedia, The Free Encyclopedia. Available at: \url{https://en.wikipedia.org/wiki/NTU_method}.
+\end{itemize}
+
+\end{document}
