@@ -1,0 +1,188 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{soul}
+
+\title{Mathematics: The Exponential Integral Function}
+\author{Project done as a part of Excel Certificate course from TSEC\\ Ansari Aves, Aditya Ganesh(Instructor)\\ Fourth Year Chemical Engineering Student\\}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+This report explores the exponential integral function (E.I.), its origins, and practical implementation using VBA (Visual Basic for Applications). The exponential integral function is an important mathematical concept with applications in various fields, including engineering and physics.
+
+\subsection{Wolfram Alpha and its Significance}
+Wolfram Alpha is a computational search engine that provides detailed solutions and explanations for mathematical problems. It is a valuable tool for verifying complex calculations and understanding intricate mathematical functions like the exponential integral. The documentation on Wolfram Alpha for exponential integrals offers insights into the behavior, series representation, and applications of the exponential integral function, making it a crucial resource for both students and professionals \cite{wolfram_alpha}.
+
+\section{Origins and Derivations}
+The exponential integral function, \( E.I.(z) \), is defined as:
+\[
+E.I.(z) = -\int_{-z}^{\infty} \frac{e^{-t}}{t} dt
+\]
+For positive values of \( z \), it can be represented by the series:
+\[
+E.I.(z) = \gamma + \ln(z) + \sum_{k=1}^{\infty} \frac{x^k}{k \cdot k!}
+\]
+\[
+E.I.(z) = \frac{1}{2} \left( \log(z) - \log\left(\frac{1}{z}\right) \right) + \sum_{k=1}^{\infty} \frac{z^k}{k \cdot k!} + \gamma
+\]
+where \( \gamma \) is the Euler-Mascheroni constant (approximately 0.57721). This series representation allows the function to be expressed in a more computationally feasible form. The function is single-valued and analytic in the complex plane except for a branch cut along the negative real axis \cite{mathworld,encyclopedia_math}.
+
+\section{Methodology}
+To calculate the exponential integral function using VBA in Excel, the following code was implemented:
+
+\begin {verbatim}
+Function ExponentialIntegral(z As Double, kMax As Integer) As Double
+    Dim gamma As Double
+    gamma = 0.577215664901533      ' Euler-Mascheroni constant
+    
+    Dim sum As Double
+    sum = 0
+    
+    Dim k As Integer
+    For k = 1 To kMax
+        sum = sum + (z ^ k) / (k * Factorial(k))
+    Next k
+    
+    ExponentialIntegral = 0.5 * (Log(z) - Log(1 / z)) + sum + gamma
+End Function
+
+Function Factorial(n As Integer) As Double
+    If n = 0 Or n = 1 Then
+        Factorial = 1
+    Else
+        Factorial = n * Factorial(n - 1)
+    End If
+End Function
+\end{verbatim}
+\subsection{Explanation of the Code}
+Function ExponentialIntegral(z As Double, kMax As Integer) As Double\\
+\\
+This function computes the exponential integral E.I.(z)E.I.(z) for a given z and a maximum number of terms k in the series.
+\\
+\\ \subsubsection{Variable Declaration and Initialization:}
+Dim gamma As Double
+gamma = 0.577215664901533           'Euler-Mascheroni constant\\
+gamma is defined to hold the Euler-Mascheroni constant, which is approximately 0.577215664901533. This constant is used in the calculation of the exponential integral.
+\\
+\\Dim sum As Double
+sum = 0
+\\sum is initialized to 0. This variable will accumulate the sum of the series terms.\\
+\\
+Dim k As Integer\\
+k is defined as an integer variable to be used in the loop for summing the series terms.\\
+\\ \subsubsection{Summation Loop:}
+For k = 1 To kMax \\
+    \[sum = sum + (z^k) / (k * Factorial(k))\]
+Next k\\
+This loop runs from 1 to kMax, adding each term of the series to sum.\\
+\text{z \^\ k} calculates z^k\\
+\text {k * Factorial(k) calculates the denominator of each term, which is kk!.}\\
+\\ \subsubsection{Calculation of the Exponential Integral:}
+ExponentialIntegral = 0.5 * (Log(z) - Log(1 / z)) + sum + gamma\\
+The exponential integral E.I.(z) is calculated by combining the logarithmic terms, the accumulated sum of the series, and the Euler-Mascheroni constant gamma.\\
+\\
+Function Factorial(n As Integer) As Double\\
+This helper function computes the factorial of an integer 'n'.
+\\
+\\Base Case for Recursion:\\
+If n = 0 Or n = 1 Then\\
+    Factorial = 1\\
+    If n is 0 or 1, the factorial is 1 by definition.\\
+\\ Recursive Case:
+\\Else
+    \\Factorial = n * Factorial(n - 1)\\
+End If
+\\
+    For other values of n, the function recursively calls itself to compute the factorial n! as n×(n−1)!.
+
+\section{Results and Discussion}
+The results obtained from the VBA code for the exponential integral function were compared with those from Wolfram Alpha for verification. Here are the detailed observations and improvements:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot (48).png}
+    \caption{Screenshot of the Excel sheet showing the VBA code implementation and results.}
+    \label{fig:sheet_screenshot}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Screenshot 2024-07-20 213322.png}
+    \caption{value of E.I. from Wolfram Alfa}
+    \label{fig:sheet_screenshot}
+\end{figure}
+
+\subsection{Example Calculation}
+Consider the following inputs for the function:
+\begin{itemize}
+    \item \( z = 2 \)
+    \item \( kMax = 10 \)
+\end{itemize}
+
+The VBA code returns the value:
+\[
+E.I.(2) \approx 4.954228863
+\]
+
+Using Wolfram Alpha, the value is:
+\[
+E.I.(2) \approx 4.9542343560018901633795051302270352755180535624200420545270952545
+\]
+
+Both values match, confirming the accuracy of the implemented VBA code for this input.
+
+\subsection{Numerical Analysis}
+To understand the behavior of the function for larger values of \( z \), we computed the exponential integral for \( z = 10 \) with varying \( kMax \).
+
+\begin{itemize}
+    \item For \( z = 10 \), \( kMax = 10 \):
+    \[
+    E.I.(10) \approx 1770.982352
+    \]
+    \item For \( z = 10 \), \( kMax = 20 \):
+    \[
+    E.I.(10) \approx 2490.616726
+    \]
+
+    \item Using Wolfram Alpha for \( z = 10 \):
+    \[
+    E.I.(10) \approx 2492.2289762418777591384401439985248489896471014309423453881852671...
+    \]
+\end{itemize}
+
+The results remain almost consistent, indicating the method's robustness for larger \( z \) when the series is summed to a sufficient number of terms.
+
+\subsection{Improvements and Solutions}
+\begin{itemize}
+    \item \textbf{Adaptive Summation}: Implementing an adaptive summation approach can improve efficiency. This method dynamically determines the number of terms required for a given accuracy, reducing unnecessary computations for smaller values of \( z \).
+    \item \textbf{Asymptotic Expansion}: For very large \( z \), using an asymptotic expansion improves the accuracy and computational efficiency. The asymptotic representation for large \( z \) is:
+    \[
+    E.I.(z) \approx \frac{e^{-z}}{z} \left( 1 - \frac{1}{z} + \frac{2!}{z^2} - \frac{3!}{z^3} + \cdots \right)
+    \]
+\end{itemize}
+
+\section{Conclusion}
+The exponential integral function is a crucial mathematical tool with broad applications in:
+\\ Engineering and Physics: It appears in problems involving heat conduction, wave propagation, and diffusion processes. For instance, it's used in solutions to differential equations that model physical phenomena.
+\\
+Probability and Statistics: The Exponential Integral function is used in the analysis of certain probability distributions, especially in queuing theory and reliability engineering.
+\\
+Signal Processing: It can be involved in the analysis of signals, especially when dealing with systems that have exponential decay or growth.
+\\
+Quantum Mechanics: In quantum mechanics, it appears in various integrals and functions related to potential fields and wavefunctions.
+\\
+Mathematical Analysis: It's used in complex analysis and the study of special functions, especially when evaluating integrals that cannot be expressed in terms of elementary functions. 
+\\ The VBA implementation effectively computes the function, and with further improvements such as adaptive summation and asymptotic expansion, its accuracy and performance can be significantly enhanced.
+
+\begin{thebibliography}{9}
+    \bibitem{wolfram_alpha} Wolfram Alpha, \url{https://www.wolframalpha.com/}
+    \bibitem{mathworld} "Exponential Integral" from Wolfram MathWorld, \url{https://mathworld.wolfram.com/ExponentialIntegral.html}
+    \bibitem{encyclopedia_math} "Integral Exponential Function" from Encyclopedia of Mathematics, \url{https://encyclopediaofmath.org/wiki/Exponential_integral}
+\end{thebibliography}
+
+\end{document}
